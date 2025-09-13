@@ -1,9 +1,9 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { Search, Camera, Mic, Download, Moon, Sun, Smartphone, Zap, Eye, Star, ArrowRight, Play } from 'lucide-react';
-
-// Mock framer-motion with CSS animations for this environment
+import Logo from "./logo.png";
 import { ReactNode, CSSProperties, ButtonHTMLAttributes, HTMLAttributes } from 'react';
+import Image from 'next/image';
 
 type MotionDivProps = {
   children?: ReactNode;
@@ -57,16 +57,24 @@ type MotionFooterProps = {
 } & HTMLAttributes<HTMLElement>;
 
 const motion = {
-  div: ({ children, initial, animate, whileHover, whileTap, transition, ...props }: MotionDivProps) => (
-    <div {...props} style={{
-      animation: animate?.opacity === 1 ? 'fadeInUp 0.8s ease-out' : 
-                 animate?.y === 0 ? 'slideUp 0.6s ease-out' : 
-                 animate?.scale === 1 ? 'scaleIn 0.5s ease-out' : 'none',
-      ...props.style
-    }}>
-      {children}
-    </div>
-  ),
+  div: ({ children, initial, animate, whileHover, whileTap, transition, ...props }: MotionDivProps) => {
+    let animation = 'none';
+    if (animate?.opacity === 1) animation = 'fadeInUp 0.8s ease-out';
+    else if (animate?.y === 0) animation = 'slideUp 0.6s ease-out';
+    else if (animate?.scale === 1) animation = 'scaleIn 0.5s ease-out';
+    // Add support for floating
+    else if (Array.isArray(animate?.y)) animation = `floatY ${transition?.duration || 3}s ease-in-out ${transition?.repeat ? 'infinite' : ''}`;
+    else if (Array.isArray(animate?.x)) animation = `floatX ${transition?.duration || 4}s ease-in-out ${transition?.repeat ? 'infinite' : ''}`;
+    return (
+      <div {...props} style={{
+        animation,
+        animationDelay: transition?.delay ? `${transition.delay}s` : undefined,
+        ...props.style
+      }}>
+        {children}
+      </div>
+    );
+  },
   button: ({ children, whileHover, whileTap, ...props }: MotionButtonProps) => (
     <button {...props} className={`${props.className || ''} transform transition-all duration-300 hover:scale-105 active:scale-95`}>
       {children}
@@ -135,10 +143,10 @@ export default function DictionaryAppLanding() {
   ];
 
   return (
-    <div className={`min-h-screen relative overflow-hidden transition-all duration-700 ${
+    <div className={`h-screen relative overflow-hidden transition-all duration-700 flex flex-col ${
       isDark 
-        ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white' 
-        : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 text-gray-900'
+         ? 'bg-slate-900 text-white' 
+         : 'bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 text-gray-900'
     }`}>
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -185,7 +193,7 @@ export default function DictionaryAppLanding() {
       </div>
 
       {/* Header */}
-      <motion.nav className="relative z-10 flex justify-between items-center p-6 max-w-6xl mx-auto"
+      <motion.nav className="relative z-10 flex justify-between items-center p-6 max-w-6xl mx-auto w-full"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -194,12 +202,16 @@ export default function DictionaryAppLanding() {
         >
           <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:rotate-12 ${
             isDark 
-              ? 'bg-gradient-to-br from-purple-600 to-pink-600 shadow-lg shadow-purple-500/25' 
-              : 'bg-gradient-to-br from-indigo-600 to-purple-600 shadow-lg shadow-indigo-500/25'
+              // ? 'bg-gradient-to-br from-purple-600 to-pink-600 shadow-lg shadow-purple-500/25' 
+              // : 'bg-gradient-to-br from-indigo-600 to-purple-600 shadow-lg shadow-indigo-500/25'
+              ? `bg-white`
+              : "bg-white"
           }`}>
-            <Search className="w-5 h-5 text-white" />
+            {/* <Search className="w-5 h-5 text-white" /> */}
+            <Image src={Logo} width={28} height={28} alt='Logo' />
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          {/* <span className="text-xl font-bold bg-[#8316F0] bg-clip-text text-transparent"> */}
             WordWise
           </span>
         </motion.div>
@@ -225,12 +237,12 @@ export default function DictionaryAppLanding() {
       </motion.nav>
 
       {/* Hero Section */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div className="space-y-8">
-            <div className="space-y-6">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-2 flex-1 flex items-center">
+        <div className="grid lg:grid-cols-2 gap-8 items-center w-full">
+          <motion.div className="space-y-6">
+            <div className="space-y-4">
               <motion.h1 
-                className={`text-6xl font-bold leading-tight ${
+                className={`text-4xl lg:text-5xl font-bold leading-tight ${
                   isDark 
                     ? 'bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent' 
                     : 'bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent'
@@ -253,7 +265,7 @@ export default function DictionaryAppLanding() {
               </motion.h1>
               
               <motion.p 
-                className={`text-xl leading-relaxed ${
+                className={`text-lg leading-relaxed ${
                   isDark ? 'text-gray-300' : 'text-gray-600'
                 }`}
                 initial={{ opacity: 0, y: 20 }}
@@ -265,62 +277,64 @@ export default function DictionaryAppLanding() {
             </div>
 
             {/* Features Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-3">
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className={`group relative p-6 rounded-2xl border cursor-pointer overflow-hidden ${
+                  className={`group relative p-4 rounded-xl border cursor-pointer overflow-hidden ${
                     isDark 
                       ? 'bg-slate-800/50 border-slate-700 hover:bg-slate-800/80' 
                       : 'bg-white/70 border-gray-200 shadow-sm hover:bg-white/90 hover:shadow-xl'
                   } transition-all duration-500`}
                   style={{ animation: `fadeInUp 0.8s ease-out ${feature.delay} both` }}
-                  whileHover={{ y: -8, scale: 1.02 }}
+                  whileHover={{ y: -4, scale: 1.02 }}
                 >
                   {/* Hover gradient overlay */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                   
-                  <div className="relative z-10">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 bg-gradient-to-br ${feature.gradient}`}>
-                      <feature.icon className="w-6 h-6 text-white" />
+                  <div className="relative z-10 text-center">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2 mx-auto transition-all duration-300 group-hover:scale-110 bg-gradient-to-br ${feature.gradient}`}>
+                      <feature.icon className="w-4 h-4 text-white" />
                     </div>
-                    <h3 className="font-semibold mb-2 text-lg">{feature.title}</h3>
-
+                    <h3 className="font-semibold text-sm mb-1">{feature.title}</h3>
+                    <p className={`text-xs leading-tight ${
+                      isDark ? 'text-gray-400' : 'text-gray-600'
+                    }`}>{feature.description}</p>
                   </div>
                   
                   {/* Animated corner accent */}
-                  <div className={`absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 transition-all duration-300`} 
+                  <div className={`absolute top-0 right-0 w-0 h-0 border-l-[15px] border-l-transparent border-t-[15px] bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 transition-all duration-300`} 
                     style={{ borderTopColor: 'currentColor' }} />
                 </motion.div>
               ))}
             </div>
 
             {/* Download Section */}
-            <motion.div className="space-y-6" 
+            <motion.div className="space-y-4" 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               style={{ animationDelay: '1.2s' }}
             >
               <motion.button 
-                className={`group relative px-10 py-5 rounded-2xl font-semibold text-lg transition-all duration-500 overflow-hidden ${
+                className={`group relative px-8 py-4 rounded-xl font-semibold transition-all duration-500 overflow-hidden ${
                   isDark
-                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-2xl shadow-purple-500/25'
-                    : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-2xl shadow-indigo-500/25'
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-xl shadow-purple-500/20'
+                    : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-xl shadow-indigo-500/20'
                 }`}
-                whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(139, 92, 246, 0.4)" }}
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px -12px rgba(139, 92, 246, 0.4)" }}
                 whileTap={{ scale: 0.98 }}
               >
                 <div className="flex items-center space-x-3 relative z-10">
-                  <Download className="w-6 h-6 transition-transform duration-300 group-hover:animate-bounce" />
+                  <Download className="w-5 h-5 transition-transform duration-300 group-hover:animate-bounce" />
                   <span>Download APK</span>
-                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
                 
                 {/* Animated background */}
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               </motion.button>
               
-              <div className="flex flex-wrap items-center gap-6 text-sm">
+              <div className="flex flex-wrap items-center gap-4 text-sm">
                 <div className="flex items-center space-x-2 group">
                   <Smartphone className={`w-4 h-4 transition-colors duration-300 ${isDark ? 'text-green-400 group-hover:text-green-300' : 'text-green-600 group-hover:text-green-700'}`} />
                   <span className={`transition-colors duration-300 ${isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-700'}`}>
@@ -332,16 +346,6 @@ export default function DictionaryAppLanding() {
                   <span className={`transition-colors duration-300 ${isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-600 group-hover:text-gray-700'}`}>
                     Fast & Offline OCR
                   </span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  {/* <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                    ))}
-                  </div> */}
-                  {/* <span className={`ml-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                    4.9/5 Rating
-                  </span> */}
                 </div>
               </div>
             </motion.div>
@@ -355,7 +359,7 @@ export default function DictionaryAppLanding() {
             transition={{ duration: 1, delay: 0.3 }}
           >
             <motion.div 
-              className={`relative w-72 h-[580px] rounded-[3rem] border-8 shadow-2xl transition-all duration-500 ${
+              className={`relative w-64 h-[480px] rounded-[2.5rem] border-6 shadow-xl transition-all duration-500 ${
                 isDark 
                   ? 'border-slate-700 bg-slate-900 shadow-purple-500/10' 
                   : 'border-gray-300 bg-white shadow-indigo-500/10'
@@ -378,50 +382,50 @@ export default function DictionaryAppLanding() {
                 isDark ? 'bg-slate-600' : 'bg-gray-400'
               }`} />
               
-              <div className="p-6 pt-16 h-full relative">
+              <div className="p-4 pt-12 h-full relative">
                 {/* Mock App Interface with animations */}
                 <motion.div 
-                  className={`rounded-2xl p-5 mb-6 border group cursor-pointer ${
+                  className={`rounded-xl p-4 mb-4 border group cursor-pointer ${
                     isDark 
                       ? 'bg-slate-800 border-slate-700 hover:bg-slate-700' 
                       : 'bg-gray-50 border-gray-200 hover:bg-white'
                   } transition-all duration-300`}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-500`}>
-                      <Search className="w-4 h-4 text-white" />
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className={`w-6 h-6 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-500 to-cyan-500`}>
+                      <Search className="w-3 h-3 text-white" />
                     </div>
-                    <span className="font-medium">Search Word</span>
+                    <span className="font-medium text-sm">Search Word</span>
                   </div>
-                  <div className={`h-10 rounded-xl border-2 border-dashed transition-colors duration-300 ${
+                  <div className={`h-8 rounded-lg border-2 border-dashed transition-colors duration-300 ${
                     isDark ? 'border-slate-600 group-hover:border-purple-500' : 'border-gray-300 group-hover:border-indigo-400'
                   } flex items-center justify-center`}>
-                    <span className={`text-sm ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>
+                    <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>
                       Type or speak...
                     </span>
                   </div>
                 </motion.div>
                 
                 <motion.div 
-                  className={`rounded-2xl p-5 border group cursor-pointer ${
+                  className={`rounded-xl p-4 border group cursor-pointer ${
                     isDark 
                       ? 'bg-slate-800 border-slate-700 hover:bg-slate-700' 
                       : 'bg-gray-50 border-gray-200 hover:bg-white'
                   } transition-all duration-300`}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500">
-                      <Camera className="w-4 h-4 text-white" />
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500">
+                      <Camera className="w-3 h-3 text-white" />
                     </div>
-                    <span className="font-medium">Text Scanner</span>
+                    <span className="font-medium text-sm">Text Scanner</span>
                   </div>
-                  <div className={`h-36 rounded-xl border-2 border-dashed flex items-center justify-center transition-all duration-300 ${
+                  <div className={`h-24 rounded-lg border-2 border-dashed flex items-center justify-center transition-all duration-300 ${
                     isDark ? 'border-slate-600 group-hover:border-purple-500' : 'border-gray-300 group-hover:border-indigo-400'
                   }`}>
                     <div className="text-center">
-                      <Play className={`w-8 h-8 mx-auto mb-2 ${isDark ? 'text-slate-500' : 'text-gray-500'}`} />
+                      <Play className={`w-6 h-6 mx-auto mb-1 ${isDark ? 'text-slate-500' : 'text-gray-500'}`} />
                       <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-gray-500'}`}>
                         Tap to scan
                       </span>
@@ -453,7 +457,7 @@ export default function DictionaryAppLanding() {
 
       {/* Footer */}
       <motion.footer 
-        className={`relative z-10 border-t py-8 mt-16 ${
+        className={`relative z-10 border-t py-4 ${
           isDark ? 'border-slate-800' : 'border-gray-200'
         }`}
         initial={{ opacity: 0 }}
@@ -461,7 +465,7 @@ export default function DictionaryAppLanding() {
         transition={{ delay: 1.5 }}
       >
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
             Built with React Native • Powered by Merriam-Webster API & ML Kit OCR
           </p>
         </div>
@@ -484,6 +488,16 @@ export default function DictionaryAppLanding() {
           from { width: 0; }
           to { width: 100%; }
         }
+        @keyframes floatY {
+          0% { transform: translateY(-5px);}
+          50% { transform: translateY(5px);}
+          100% { transform: translateY(-5px);}
+}
+        @keyframes floatX {
+          0% { transform: translateX(-5px);}
+          50% { transform: translateX(5px);}
+          100% { transform: translateX(-5px);}
+}
       `}</style>
     </div>
   );
