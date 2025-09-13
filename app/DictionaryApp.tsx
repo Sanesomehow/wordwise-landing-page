@@ -21,6 +21,8 @@ import {
   ButtonHTMLAttributes,
   HTMLAttributes,
 } from "react";
+import Logo from "./logo.png";
+import Image from "next/image";
 
 type MotionDivProps = {
   children?: ReactNode;
@@ -191,7 +193,8 @@ export default function DictionaryAppLanding() {
 
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = "/your-app.apk";
+    link.href =
+      "https://github.com/Sanesomehow/wordwise-landing-page/releases/download/v1.0.0/WordWise-v1.0.apk";
     link.download = "WordWise-Dictionary.apk";
     document.body.appendChild(link);
     link.click();
@@ -222,22 +225,21 @@ export default function DictionaryAppLanding() {
     {
       icon: Search,
       title: "Smart Search",
-      description:
-        "Type or speak any word for instant definitions and synonyms",
+      description: "Type any word for instant definitions.",
       gradient: "from-blue-500 to-cyan-500",
       delay: "0.6s",
     },
     {
       icon: Camera,
       title: "Text Scanner",
-      description: "Scan printed text and tap words to define with ML Kit OCR",
+      description: "Scan text and tap words to find their meaning",
       gradient: "from-purple-500 to-pink-500",
       delay: "0.8s",
     },
     {
       icon: Mic,
       title: "Voice Input",
-      description: "Speak words for hands-free lookup with speech recognition",
+      description: "Speak words for hands-free lookup",
       gradient: "from-emerald-500 to-teal-500",
       delay: "1s",
     },
@@ -312,7 +314,8 @@ export default function DictionaryAppLanding() {
           <div
             className={`w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:rotate-12 bg-white`}
           >
-            <Search className="w-4 h-4 md:w-5 md:h-5 text-purple-600" />
+            {/* <Search className="w-4 h-4 md:w-5 md:h-5 text-purple-600" /> */}
+            <Image width={28} height={28} alt="Logo" src={Logo} />
           </div>
           <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             WordWise
@@ -341,11 +344,11 @@ export default function DictionaryAppLanding() {
 
       {/* Hero Section - Mobile-first responsive design */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-6 flex-1 flex items-center">
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-start lg:items-center w-full">
+        <div className="grid lg:grid-cols-[1.3fr_1fr] gap-6 lg:gap-12 items-start lg:items-center w-full">
           <motion.div className="space-y-6 text-center lg:text-left">
-            <div className="space-y-4">
+            <div className="space-y-2">
               <motion.h1
-                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight ${
+                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-none ${
                   isDark
                     ? "bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent"
                     : "bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent"
@@ -358,7 +361,7 @@ export default function DictionaryAppLanding() {
                 <span
                   className={`relative ${
                     isDark ? "text-purple-400" : "text-indigo-600"
-                  }`}
+                  } text-lg md:text-xl lg:text-2xl font-semibold`}
                 >
                   & Text Scanner
                   <div
@@ -373,7 +376,7 @@ export default function DictionaryAppLanding() {
               </motion.h1>
 
               <motion.p
-                className={`text-base md:text-lg leading-relaxed ${
+                className={`text-xs md:text-lg leading-relaxed pt-2 md:pt-5 ${
                   isDark ? "text-gray-300" : "text-gray-600"
                 } px-2 lg:px-0`}
                 initial={{ opacity: 0, y: 20 }}
@@ -386,19 +389,19 @@ export default function DictionaryAppLanding() {
             </div>
 
             {/* Features Grid - Mobile responsive */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 max-w-lg mx-auto lg:max-w-none">
+            <div className="flex flex-row gap-2 sm:grid sm:grid-cols-3 sm:gap-3 md:gap-4 max-w-lg mx-auto lg:max-w-none">
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className={`group relative p-3 md:p-4 rounded-xl border cursor-pointer overflow-hidden ${
+                  className={`group relative min-w-[120px] sm:min-w-0 p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl border cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg ${
                     isDark
-                      ? "bg-slate-800/50 border-slate-700 hover:bg-slate-800/80"
-                      : "bg-white/70 border-gray-200 shadow-sm hover:bg-white/90 hover:shadow-xl"
-                  } transition-all duration-500`}
+                      ? "bg-slate-800/50 border-slate-700 hover:bg-slate-800/80 hover:border-slate-600"
+                      : "bg-white/70 border-gray-200 shadow-sm hover:bg-white hover:shadow-xl hover:border-gray-300"
+                  }`}
                   style={{
                     animation: `fadeInUp 0.8s ease-out ${feature.delay} both`,
                   }}
-                  whileHover={{ y: -4, scale: 1.02 }}
+                  // Remove whileHover prop
                 >
                   {/* Hover gradient overlay */}
                   <div
@@ -407,15 +410,16 @@ export default function DictionaryAppLanding() {
 
                   <div className="relative z-10 text-center">
                     <div
-                      className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center mb-2 mx-auto transition-all duration-300 group-hover:scale-110 bg-gradient-to-br ${feature.gradient}`}
+                      className={`w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-md sm:rounded-lg flex items-center justify-center mb-1 sm:mb-2 mx-auto transition-all duration-300 group-hover:scale-110 bg-gradient-to-br ${feature.gradient}`}
                     >
-                      <feature.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                      <feature.icon className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
                     </div>
-                    <h3 className="font-semibold text-sm md:text-base mb-1">
+                    <h3 className="font-semibold text-xs sm:text-sm md:text-base mb-1">
                       {feature.title}
                     </h3>
+                    {/* Hide description on mobile, show on sm+ */}
                     <p
-                      className={`text-xs md:text-sm leading-tight ${
+                      className={`hidden sm:block text-xs md:text-sm leading-tight ${
                         isDark ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
@@ -425,7 +429,7 @@ export default function DictionaryAppLanding() {
 
                   {/* Animated corner accent */}
                   <div
-                    className={`absolute top-0 right-0 w-0 h-0 border-l-[15px] border-l-transparent border-t-[15px] bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 transition-all duration-300`}
+                    className={`absolute top-0 right-0 w-0 h-0 border-l-[10px] sm:border-l-[15px] border-l-transparent border-t-[10px] sm:border-t-[15px] bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 transition-all duration-300`}
                     style={{ borderTopColor: "currentColor" }}
                   />
                 </motion.div>
@@ -443,7 +447,7 @@ export default function DictionaryAppLanding() {
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto items-center sm:items-start">
                 <motion.button
                   onClick={handleDownload}
-                  className={`group relative px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold transition-all duration-500 overflow-hidden flex-1 sm:flex-initial ${
+                  className={`group relative px-6 md:px-8 py-2 md:py-3 rounded-xl font-semibold transition-all duration-500 overflow-hidden flex-1 sm:flex-initial ${
                     isDark
                       ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-xl shadow-purple-500/20"
                       : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-xl shadow-indigo-500/20"
