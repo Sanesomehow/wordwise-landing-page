@@ -669,8 +669,19 @@ export default function DictionaryAppLanding() {
               {/* Screen area - video fills entire phone with border consideration */}
               <div className="absolute inset-0 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden p-1 md:p-1.5">
                 <div className="w-full h-full rounded-[1.7rem] md:rounded-[2.2rem] overflow-hidden mt-7 md:mt-10">
-                  <video
+                  {/* <video
                     src="/Usecase.mp4"
+                    controls
+                    autoPlay
+                    loop
+                    muted
+                    className="w-full h-full object-cover"
+                    style={{
+                      background: isDark ? "#18181b" : "#fff",
+                    }}
+                  /> */}
+                  <video
+                    src="https://res.cloudinary.com/daihqsyzb/video/upload/v1757789290/Usecase_lea2l2.mp4"
                     controls
                     autoPlay
                     loop
