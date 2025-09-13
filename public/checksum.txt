@@ -1,0 +1,11 @@
+SHA256 hash of WordWise-v1.0.apk:
+
+CertUtil: -hashfile command completed successfully.
+
+WordWise-v1.0.apk
+
+SHA256: 5cd3f337eb3a2d6443bc9d086b6cf985c2251658c4ff383668b473af142ba927
+
+File Size: 54 MB
+Build Date: 2025-09-13
+Version: 1.0.0
