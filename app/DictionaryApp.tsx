@@ -682,7 +682,7 @@ export default function DictionaryAppLanding() {
                   /> */}
                   <video
                     src="https://res.cloudinary.com/daihqsyzb/video/upload/v1757789290/Usecase_lea2l2.mp4"
-                    controls
+                    // controls
                     autoPlay
                     loop
                     muted
