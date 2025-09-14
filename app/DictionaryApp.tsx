@@ -315,7 +315,7 @@ export default function DictionaryAppLanding() {
             className={`w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:rotate-12 bg-white`}
           >
             {/* <Search className="w-4 h-4 md:w-5 md:h-5 text-purple-600" /> */}
-            <Image width={28} height={28} alt="Logo" src={Logo} />
+            <Image width={24} height={24} alt="Logo" src={Logo} />
           </div>
           <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             WordWise
@@ -343,9 +343,9 @@ export default function DictionaryAppLanding() {
       </motion.nav>
 
       {/* Hero Section - Mobile-first responsive design */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-6 flex-1 flex items-center">
-        <div className="grid lg:grid-cols-[1.3fr_1fr] gap-6 lg:gap-12 items-start lg:items-center w-full">
-          <motion.div className="space-y-6 text-center lg:text-left">
+      <div className="relative z-10 max-w-6xl mx-auto px-2 sm:px-4 md:px-6 py-4 md:py-6 flex-1 flex items-center overflow-x-hidden">
+        <div className="grid lg:grid-cols-[1.3fr_1fr] gap-6 lg:gap-12 items-start lg:items-center w-full min-w-0">
+          <motion.div className="space-y-6 text-center lg:text-left min-w-0">
             <div className="space-y-2">
               <motion.h1
                 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-none ${
@@ -389,11 +389,11 @@ export default function DictionaryAppLanding() {
             </div>
 
             {/* Features Grid - Mobile responsive */}
-            <div className="flex flex-row gap-2 sm:grid sm:grid-cols-3 sm:gap-3 md:gap-4 max-w-lg mx-auto lg:max-w-none">
+            <div className="flex flex-row gap-2 sm:grid sm:grid-cols-3 sm:gap-3 md:gap-4 max-w-lg mx-auto lg:max-w-none overflow-x-auto sm:overflow-x-visible">
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className={`group relative min-w-[120px] sm:min-w-0 p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl border cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg ${
+                  className={`group relative flex-1 sm:min-w-0 p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl border cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg ${
                     isDark
                       ? "bg-slate-800/50 border-slate-700 hover:bg-slate-800/80 hover:border-slate-600"
                       : "bg-white/70 border-gray-200 shadow-sm hover:bg-white hover:shadow-xl hover:border-gray-300"
